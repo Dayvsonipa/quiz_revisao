@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f7f9fc">
+  <meta name="description" content="Quiz de Fundamentos da Computação com nove questões e nota final.">
+  <title>Quiz | Fundamentos da Computação</title>
+  <style>
+    :root { color-scheme: light; font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; --ink:#172239; --muted:#58667d; --line:#dfe6f0; --primary:#3157d5; --soft:#eaf0ff; --good:#146c53; --bad:#b5473e; }
+    * { box-sizing:border-box; }
+    html { width:100%; }
+    body { margin:0; width:100%; min-width:0; background:radial-gradient(circle at 85% -10%,#e8edff 0,transparent 35%),radial-gradient(circle at -5% 80%,#e5f6f2 0,transparent 32%),#f7f9fc; color:var(--ink); line-height:1.5; }
+    button,input { font:inherit; }
+    button { cursor:pointer; }
+    button:focus-visible,input:focus-visible { outline:3px solid #7d9afa; outline-offset:3px; }
+    .shell { max-width:960px; min-width:0; margin:auto; padding:clamp(16px,4vw,40px) clamp(16px,4vw,32px) 48px; }
+    .brand { display:flex; align-items:center; gap:12px; margin-bottom:clamp(26px,5vw,46px); color:#4f5e79; font-size:.88rem; font-weight:700; letter-spacing:.02em; }
+    .brand-icon { display:grid; place-items:center; flex:none; width:38px; height:38px; color:white; background:#3157d5; border-radius:12px; box-shadow:0 8px 22px #3157d52a; font-size:.8rem; }
+    .brand span:last-child { overflow-wrap:anywhere; }
+    .panel { background:#fff; border:1px solid #e7ecf5; border-radius:26px; box-shadow:0 18px 56px #2436610d; padding:clamp(22px,5vw,54px); min-width:0; }
+    .eyebrow { display:inline-flex; align-items:center; gap:8px; border-radius:100px; background:var(--soft); color:#3157ba; padding:7px 12px; font-size:.78rem; font-weight:800; letter-spacing:.04em; text-transform:uppercase; }
+    h1,h2,p { margin-top:0; }
+    h1 { max-width:720px; font-size:clamp(2rem,5vw,3.8rem); letter-spacing:-.05em; line-height:1.09; margin:24px 0 18px; }
+    h2 { font-size:clamp(1.3rem,3vw,2rem); letter-spacing:-.03em; line-height:1.33; margin:22px 0 28px; overflow-wrap:anywhere; }
+    .lead { max-width:650px; color:var(--muted); font-size:clamp(1rem,2vw,1.14rem); margin-bottom:28px; }
+    .features { display:flex; flex-wrap:wrap; gap:10px; margin-bottom:34px; }
+    .feature { border:1px solid var(--line); border-radius:12px; padding:9px 13px; font-size:.9rem; color:#3d4b63; font-weight:650; }
+    .field-label { display:block; font-size:.88rem; font-weight:750; margin-bottom:8px; }
+    .field { display:block; width:min(100%,440px); min-height:52px; padding:13px 15px; border-radius:12px; border:1.5px solid #cdd7e5; background:white; color:var(--ink); }
+    .field::placeholder { color:#8793a6; }
+    .hint { font-size:.82rem; color:var(--muted); margin:9px 0 24px; }
+    .error { color:var(--bad); min-height:1.4em; font-size:.86rem; font-weight:650; margin:8px 0 0; }
+    .button { border:0; border-radius:13px; padding:13px 20px; min-height:50px; font-weight:750; transition:transform .15s ease,background .15s ease; }
+    .button:hover { transform:translateY(-1px); }
+    .primary { color:#fff; background:var(--primary); box-shadow:0 8px 20px #3157d52e; }
+    .primary:hover { background:#2549c7; }
+    .secondary { color:#3e4d68; background:#edf1f7; }
+    .outline { color:var(--primary); background:white; border:1.5px solid #c9d5f5; }
+    .nav { display:flex; flex-wrap:wrap; gap:10px; justify-content:space-between; margin-top:28px; }
+    .nav .button { min-width:125px; }
+    .nav .primary { margin-left:auto; }
+    .overline { display:flex; justify-content:space-between; gap:12px; align-items:center; font-size:.83rem; font-weight:750; color:#53647f; margin-bottom:13px; }
+    .progress { height:8px; background:#edf1f8; border-radius:100px; overflow:hidden; }
+    .progress > div { height:100%; width:0; background:#4868d9; border-radius:100px; transition:width .25s ease; }
+    .topic { margin-top:32px; color:#3157ba; font-size:.85rem; font-weight:800; }
+    .choices { display:grid; gap:11px; min-width:0; }
+    .choice { position:relative; display:flex; align-items:flex-start; gap:14px; width:100%; border:1.5px solid #dce4ef; background:#fff; border-radius:15px; padding:16px; text-align:left; color:#26334b; overflow-wrap:anywhere; cursor:pointer; transition:border-color .15s,background .15s,transform .15s; }
+    .choice:hover { border-color:#9aafea; background:#f8faff; transform:translateY(-1px); }
+    .choice:has(input:checked) { background:#edf2ff; border-color:#4264d2; box-shadow:inset 0 0 0 1px #4264d2; }
+    .choice:focus-within { outline:3px solid #9aaff1; outline-offset:2px; }
+    .choice input { position:absolute; opacity:0; width:1px; height:1px; }
+    .choice-letter { display:grid; flex:none; place-items:center; width:28px; height:28px; border-radius:9px; background:#eff2f7; color:#50617b; font-size:.85rem; font-weight:800; }
+    .choice:has(input:checked) .choice-letter { background:#4264d2; color:#fff; }
+    .choice-text { min-width:0; padding-top:2px; font-size:.98rem; }
+    .status { color:var(--bad); font-size:.87rem; font-weight:700; min-height:1.5em; margin:14px 0 0; }
+    .result-top { display:flex; flex-wrap:wrap; gap:24px; justify-content:space-between; align-items:center; }
+    .score { flex:none; display:grid; place-content:center; text-align:center; width:150px; height:150px; border-radius:50%; background:#ecf2ff; border:9px solid #d5e2ff; color:#294bb7; }
+    .score strong { font-size:2.65rem; line-height:1; letter-spacing:-.05em; }
+    .score span { font-size:.85rem; font-weight:800; margin-top:3px; }
+    .result-name { overflow-wrap:anywhere; }
+    .result-meta { color:var(--muted); margin:7px 0; }
+    .result-actions { display:flex; flex-wrap:wrap; gap:10px; margin:27px 0 0; }
+    .review { margin-top:38px; border-top:1px solid var(--line); padding-top:26px; }
+    .review h2 { margin:0 0 18px; font-size:1.3rem; }
+    .review-card { border:1px solid var(--line); border-left:4px solid var(--bad); border-radius:13px; padding:17px 18px; margin:12px 0; min-width:0; overflow-wrap:anywhere; }
+    .review-card.correct { border-left-color:var(--good); }
+    .review-head { font-size:.8rem; font-weight:800; color:var(--muted); text-transform:uppercase; letter-spacing:.03em; }
+    .review-question { margin:7px 0 11px; font-weight:750; }
+    .review-card p { margin:6px 0; font-size:.9rem; }
+    .review-card .explanation { color:var(--muted); margin-top:10px; }
+    .good-text { color:var(--good); font-weight:750; }
+    .bad-text { color:var(--bad); font-weight:750; }
+    .footer { text-align:center; color:#8793a7; font-size:.77rem; margin:22px auto 0; }
+    [hidden] { display:none !important; }
+    @media (max-width:600px) {
+      .shell { padding-top:18px; }
+      .brand { margin-bottom:22px; }
+      .panel { border-radius:20px; padding:23px 18px; }
+      .choice { padding:14px 12px; gap:10px; }
+      .choice-text { font-size:.93rem; }
+      .nav .button { flex:1; min-width:0; }
+      .nav .primary { flex:1.35; }
+      .score { width:124px; height:124px; border-width:7px; }
+      .score strong { font-size:2.1rem; }
+    }
+    @media (prefers-reduced-motion:reduce) { *,*:before,*:after { scroll-behavior:auto !important; transition:none !important; animation:none !important; } }
+    @media print { body { background:white; } .shell { max-width:none; padding:0; } .brand,.footer,.result-actions,.review { display:none !important; } .panel { box-shadow:none; border:0; padding:0; } .score { print-color-adjust:exact; -webkit-print-color-adjust:exact; } }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header class="brand"><span class="brand-icon" aria-hidden="true">DF</span><span>Professor Dayvson <span aria-hidden="true">·</span> Fundamentos da Computação</span></header>
+    <section id="welcome" class="panel" aria-labelledby="welcome-title">
+      <span class="eyebrow">Avaliação interativa</span>
+      <h1 id="welcome-title">Quanto você sabe sobre computação?</h1>
+      <p class="lead">Nove situações para pensar e escolher a melhor resposta. Responda no seu ritmo e veja sua nota ao finalizar.</p>
+      <div class="features"><span class="feature">9 questões</span><span class="feature">5 alternativas por questão</span><span class="feature">Nota de 0 a 10</span></div>
+      <form id="start-form" novalidate>
+        <label class="field-label" for="student-name">Seu nome</label>
+        <input class="field" id="student-name" name="student-name" autocomplete="name" maxlength="80" placeholder="Digite seu nome completo" required aria-describedby="name-hint name-error">
+        <p class="hint" id="name-hint">O nome aparecerá no resultado final.</p>
+        <p class="error" id="name-error" role="alert"></p>
+        <button class="button primary" type="submit">Começar o quiz →</button>
+      </form>
+    </section>
+    <section id="quiz" class="panel" aria-labelledby="question-title" hidden>
+      <div class="overline"><span id="question-count">Questão 1 de 9</span><span id="answered-count">0 de 9 respondidas</span></div>
+      <div class="progress" role="progressbar" aria-label="Progresso das questões" aria-valuemin="0" aria-valuemax="9" aria-valuenow="0"><div id="progress-fill"></div></div>
+      <div class="topic" id="topic"></div>
+      <h2 id="question-title" tabindex="-1"></h2>
+      <div id="choices" class="choices" role="radiogroup" aria-labelledby="question-title"></div>
+      <p id="question-error" class="status" role="alert"></p>
+      <nav class="nav" aria-label="Navegação do quiz"><button type="button" id="back" class="button secondary">← Anterior</button><button type="button" id="next" class="button primary">Próxima →</button></nav>
+    </section>
+    <section id="result" class="panel" aria-labelledby="result-title" hidden>
+      <span class="eyebrow">Quiz concluído</span>
+      <div class="result-top">
+        <div>
+          <h1 id="result-title" tabindex="-1">Seu resultado</h1>
+          <p id="result-name" class="result-name"></p>
+          <p id="result-correct" class="result-meta"></p>
+          <p id="result-date" class="result-meta"></p>
+        </div>
+        <div class="score" aria-label="Nota final"><strong id="result-score"></strong><span>de 10 pontos</span></div>
+      </div>
+      <div class="result-actions"><button id="print" class="button primary" type="button">Imprimir ou salvar resultado</button><button id="restart" class="button outline" type="button">Refazer quiz</button></div>
+      <div class="review"><h2>Confira suas respostas</h2><div id="review-list"></div></div>
+    </section>
+    <p class="footer">As respostas são avaliadas neste aparelho. O resultado não é enviado automaticamente ao professor.</p>
+  </main>
+  <script>
+  "use strict";
+  const QUESTIONS = [{"topic": "História da computação", "question": "Ao comparar gerações de computadores, percebeu-se que os primeiros equipamentos eletrônicos utilizavam válvulas, que ocupavam muito espaço e geravam bastante calor. A substituição dessas válvulas por outro componente permitiu construir máquinas menores, com menor consumo de energia e maior confiabilidade. Qual componente representou essa mudança?", "options": ["O transistor, utilizado na construção dos computadores da segunda geração.", "O cartão perfurado, utilizado para registrar dados e instruções.", "O disco rígido, responsável pelo armazenamento permanente de arquivos.", "O microprocessador, que já era o componente básico dos primeiros computadores a válvulas.", "O monitor, que passou a executar as instruções antes realizadas pelas válvulas."], "answer": 0, "explanation": "Os transistores substituíram as válvulas e marcaram a segunda geração de computadores."}, {"topic": "Arquitetura do computador", "question": "Um estudante afirma: 'Quando abro um programa, ele é executado diretamente pelo SSD; a memória RAM e o sistema operacional não participam do processo.'  Considerando hardware, software e a arquitetura básica de um computador, assinale a alternativa correta.", "options": ["O SSD executa as instruções, enquanto a CPU apenas armazena arquivos.", "O programa é carregado do armazenamento para a RAM; o sistema operacional gerencia recursos; e a CPU busca, decodifica e executa as instruções.", "O sistema operacional substitui a CPU durante a execução dos programas.", "A memória RAM mantém os programas salvos, mesmo sem energia.", "A Unidade de Controle serve apenas para copiar arquivos entre pastas."], "answer": 1, "explanation": "O programa é carregado do armazenamento para a RAM; a CPU executa as instruções e o sistema operacional gerencia os recursos."}, {"topic": "Unidades e transferência", "question": "Uma escola precisa enviar um vídeo de 60 MB para uma plataforma. A conexão mantém uma taxa de upload de 15 Mb/s durante toda a transferência. Considere 1 byte = 8 bits e desconsidere perdas e atrasos adicionais. Qual alternativa apresenta a conversão e o tempo de transferência corretos?", "options": ["O vídeo equivale a 60 Mb e será enviado em 4 segundos.", "O vídeo equivale a 480 Mb e será enviado em 8 segundos.", "O vídeo equivale a 480 Mb e será enviado em 32 segundos.", "O vídeo equivale a 7,5 Mb e será enviado em 0,5 segundo.", "O vídeo equivale a 900 Mb e será enviado em 60 segundos."], "answer": 2, "explanation": "60 MB × 8 = 480 Mb. A 15 Mb/s, o envio leva 480 ÷ 15 = 32 segundos."}, {"topic": "Dados e decisões", "question": "O painel de uma empresa registrou 1.850 eventos, misturando vendas concluídas, cancelamentos, cliques e erros. A direção concluiu que houve lucro apenas porque o número parecia alto. Qual deve ser a primeira ação antes de tomar uma decisão?", "options": ["Autorizar imediatamente novos investimentos, pois 1.850 é um número elevado.", "Apagar os erros e cancelamentos para que o resultado pareça melhor.", "Pedir a uma inteligência artificial que escolha quais registros devem ser considerados verdadeiros.", "Classificar e validar os eventos, verificar sua origem e comparar os resultados com outros períodos.", "Considerar todos os eventos como vendas, pois foram registrados pelo sistema."], "answer": 3, "explanation": "Antes de decidir, é preciso validar, classificar e contextualizar os registros."}, {"topic": "Pensamento computacional", "question": "Antes de programar um elevador, a equipe escreveu apenas: 'Quando alguém apertar o botão, o elevador deve ir até essa pessoa.' A descrição não informa andar, direção, prioridade, estado das portas nem situações de segurança. Qual procedimento representa melhor o pensamento computacional?", "options": ["Começar a programar imediatamente e decidir as regras durante a execução do sistema.", "Trocar o computador por um modelo mais rápido para compensar a falta de regras.", "Eliminar as condições, pois um algoritmo deve possuir apenas uma sequência fixa.", "Escrever os passos em qualquer ordem, pois a ordem não altera o resultado de um algoritmo.", "Decompor o problema, identificar entradas e condições, organizar os passos e testar situações normais, limites e falhas."], "answer": 4, "explanation": "O problema deve ser dividido em partes, com entradas, condições, passos e testes definidos."}, {"topic": "Algoritmos e condições", "question": "Um estacionamento possui capacidade para 30 veículos. O sistema recebe a quantidade atual de veículos e decide se deve liberar a entrada de mais um. Porém, a condição utilizada é quantidade \u003c= 30; assim, quando já existem 30 veículos, a cancela ainda abre e o total chega a 31. Considerando uma entrada por vez e quantidades válidas, qual alteração corrige o problema?", "options": ["Manter a condição e substituir o total 31 por 30 depois que o veículo entrar.", "Liberar a entrada somente quando a quantidade for maior que 30.", "Somar uma unidade à quantidade antes de verificar se existe vaga.", "Liberar a entrada somente se quantidade \u003c 30 e, após a entrada, incrementar o total; caso contrário, informar que está lotado.", "Zerar a quantidade sempre que o estacionamento atingir sua capacidade."], "answer": 3, "explanation": "Com 30 vagas, a entrada só pode ser liberada quando a quantidade atual for menor que 30."}, {"topic": "Redes e DNS", "question": "Um computador acessa o servidor pelo endereço 203.0.113.20, mas não consegue acessá-lo pelo nome portal.faculdade.br. Outros serviços acessados diretamente por IP continuam funcionando. Qual diagnóstico e explicação estão corretos?", "options": ["Toda a Internet está indisponível, pois nenhum pacote consegue sair do computador.", "Todos os equipamentos devem receber o mesmo endereço IP para facilitar a comunicação.", "Deve-se verificar o DNS, responsável por associar nomes a endereços IP; depois disso, os roteadores encaminham os pacotes por decisões sucessivas de próximo salto.", "Cada roteador precisa conhecer antecipadamente todo o percurso até o servidor antes de encaminhar um pacote.", "O problema está obrigatoriamente no banco de dados do servidor."], "answer": 2, "explanation": "O DNS resolve o nome para um endereço IP; depois, os roteadores encaminham os pacotes."}, {"topic": "Banco de dados", "question": "Uma loja armazena clientes, telefones, pedidos, produtos e quantidades em uma única tabela. Os dados do cliente são repetidos em cada item comprado e, ao excluir um pedido, o cadastro do cliente também desaparece. Qual reorganização resolve melhor os problemas de repetição e perda de dados?", "options": ["Manter todos os dados na mesma tabela e apenas aumentar o espaço de armazenamento.", "Criar tabelas CLIENTE, PEDIDO, PRODUTO e ITEM_PEDIDO, utilizando chaves primárias e estrangeiras para manter os relacionamentos.", "Criar uma planilha diferente para cada venda realizada.", "Remover os identificadores para diminuir a quantidade de campos.", "Repetir também os dados do vendedor em cada linha para evitar consultas entre tabelas."], "answer": 1, "explanation": "As tabelas separadas e relacionadas por chaves evitam repetição e perda indevida de dados."}, {"topic": "Segurança e ética", "question": "Uma empresa utiliza a mesma conta e senha para toda a equipe, mantém o único backup no servidor original e monitora localização e hábitos dos clientes sem informá-los. A direção afirma que não é responsável porque o sistema foi terceirizado. Qual plano combina segurança, ética e responsabilidade profissional?", "options": ["Manter a conta compartilhada e apenas aumentar o tamanho da senha.", "Adotar contas individuais, autenticação em dois fatores, menor privilégio e backup separado; coletar somente dados necessários, informar os afetados e definir responsáveis pelas decisões.", "Apagar os registros de acesso diariamente para impedir investigações futuras.", "Coletar todos os dados tecnicamente possíveis, mesmo sem finalidade definida.", "Transferir toda a responsabilidade ao fornecedor que desenvolveu o sistema."], "answer": 1, "explanation": "Contas individuais, acesso restrito, backup separado e transparência no uso de dados reduzem riscos."}];
+  const $ = id => document.getElementById(id);
+  const letters = ['A','B','C','D','E'];
+  let student = '';
+  let current = 0;
+  let responses = Array(QUESTIONS.length).fill(null);
+  const sections = ['welcome','quiz','result'];
+  function showSection(id) {
+    for (const section of sections) $(section).hidden = section !== id;
+    window.scrollTo({ top: 0, behavior: 'auto' });
+  }
+  function renderQuestion() {
+    const q = QUESTIONS[current];
+    $('question-count').textContent = `Questão ${current + 1} de ${QUESTIONS.length}`;
+    const answered = responses.filter(x => x !== null).length;
+    $('answered-count').textContent = `${answered} de ${QUESTIONS.length} respondidas`;
+    $('progress-fill').style.width = `${(answered / QUESTIONS.length) * 100}%`;
+    document.querySelector('.progress').setAttribute('aria-valuenow', String(answered));
+    $('topic').textContent = q.topic;
+    $('question-title').textContent = q.question;
+    $('question-error').textContent = '';
+    const list = $('choices');
+    list.replaceChildren();
+    q.options.forEach((option, index) => {
+      const label = document.createElement('label');
+      label.className = 'choice';
+      const input = document.createElement('input');
+      input.type = 'radio'; input.name = 'choice'; input.value = String(index);
+      input.checked = responses[current] === index;
+      input.addEventListener('change', () => {
+        responses[current] = index;
+        $('question-error').textContent = '';
+        const total = responses.filter(x => x !== null).length;
+        $('answered-count').textContent = `${total} de ${QUESTIONS.length} respondidas`;
+        $('progress-fill').style.width = `${(total / QUESTIONS.length) * 100}%`;
+        document.querySelector('.progress').setAttribute('aria-valuenow', String(total));
+      });
+      const letter = document.createElement('span'); letter.className = 'choice-letter'; letter.textContent = letters[index];
+      const body = document.createElement('span'); body.className = 'choice-text'; body.textContent = option;
+      label.append(input, letter, body); list.append(label);
+    });
+    $('back').hidden = current === 0;
+    $('next').textContent = current === QUESTIONS.length - 1 ? 'Concluir e ver nota →' : 'Próxima →';
+    $('question-title').focus({preventScroll:true});
+  }
+  $('start-form').addEventListener('submit', event => {
+    event.preventDefault();
+    const name = $('student-name').value.trim().replace(/\s+/g,' ');
+    if (!name) { $('name-error').textContent = 'Digite seu nome para começar.'; $('student-name').focus(); return; }
+    student = name;
+    $('name-error').textContent = '';
+    current = 0; responses = Array(QUESTIONS.length).fill(null);
+    showSection('quiz'); renderQuestion();
+  });
+  $('back').addEventListener('click', () => { if (current > 0) { current--; showSection('quiz'); renderQuestion(); } });
+  $('next').addEventListener('click', () => {
+    if (responses[current] === null) { $('question-error').textContent = 'Selecione uma alternativa para continuar.'; $('choices').querySelector('input')?.focus(); return; }
+    if (current < QUESTIONS.length - 1) { current++; showSection('quiz'); renderQuestion(); return; }
+    const firstMissing = responses.indexOf(null);
+    if (firstMissing !== -1) { current = firstMissing; showSection('quiz'); renderQuestion(); $('question-error').textContent = 'Responda esta questão antes de concluir.'; return; }
+    renderResult(); showSection('result'); $('result-title').focus?.();
+  });
+  function addLine(parent, prefix, content, className='') {
+    const p = document.createElement('p');
+    if (prefix) { const b = document.createElement('strong'); b.textContent = prefix; p.append(b); }
+    const span = document.createElement('span'); span.textContent = content; if (className) span.className = className; p.append(span);
+    parent.append(p);
+  }
+  function renderResult() {
+    const correct = responses.reduce((sum, answer, i) => sum + Number(answer === QUESTIONS[i].answer), 0);
+    const score = (correct * 10 / QUESTIONS.length).toLocaleString('pt-BR', {minimumFractionDigits:1, maximumFractionDigits:1});
+    $('result-name').textContent = `Aluno(a): ${student}`;
+    $('result-correct').textContent = `${correct} ${correct === 1 ? 'acerto' : 'acertos'} em ${QUESTIONS.length} questões`;
+    $('result-date').textContent = `Concluído em ${new Intl.DateTimeFormat('pt-BR', {dateStyle:'short',timeStyle:'short'}).format(new Date())}`;
+    $('result-score').textContent = score;
+    const list = $('review-list'); list.replaceChildren();
+    QUESTIONS.forEach((q, i) => {
+      const ok = responses[i] === q.answer;
+      const card = document.createElement('article'); card.className = `review-card${ok ? ' correct' : ''}`;
+      const head = document.createElement('div'); head.className = 'review-head'; head.textContent = `Questão ${i + 1} · ${ok ? 'Acertou' : 'Precisa revisar'}`; card.append(head);
+      const title = document.createElement('p'); title.className = 'review-question'; title.textContent = q.question; card.append(title);
+      addLine(card, 'Sua resposta: ', `${letters[responses[i]]}. ${q.options[responses[i]]}`, ok ? 'good-text' : 'bad-text');
+      if (!ok) addLine(card, 'Resposta correta: ', `${letters[q.answer]}. ${q.options[q.answer]}`, 'good-text');
+      const explain = document.createElement('p'); explain.className = 'explanation'; explain.textContent = q.explanation; card.append(explain);
+      list.append(card);
+    });
+  }
+  $('print').addEventListener('click', () => window.print());
+  $('restart').addEventListener('click', () => { responses = Array(QUESTIONS.length).fill(null); current = 0; showSection('welcome'); $('student-name').focus(); });
+  </script>
+</body>
+</html>
